@@ -58,7 +58,7 @@ pip install ctransformers</code>
   &#34;model&#34;: &#34;qwen-chat&#34;,
   &#34;messages&#34;: [{&#34;role&#34;: &#34;user&#34;, &#34;content&#34;: &#34;Hello!&#34;}]
 }&#39;</code>
-  </pre></div><p>将 &lt;oneapi_url> 替换为你的 One API 地址，&lt;oneapi_token> 替换为你的 One API 令牌。model 为刚刚在 One API 填写的自定义模型。</p><h2 id=将本地模型接入-fastgpt>将本地模型接入 FastGPT <a href=#%e5%b0%86%e6%9c%ac%e5%9c%b0%e6%a8%a1%e5%9e%8b%e6%8e%a5%e5%85%a5-fastgpt class=anchor aria-hidden=true><i class="material-icons align-middle">link</i></a></h2><p>修改 FastGPT 的 <code>config.json</code> 配置文件的 llmModels 部分加入 qwen-chat 模型：</p><div class=prism-codeblock><pre id=5ef6fc9 class=language-json>
+  </pre></div><p>将 &lt;oneapi_url> 替换为你的 One API 地址，&lt;oneapi_token> 替换为你的 One API 令牌。model 为刚刚在 One API 填写的自定义模型。</p><h2 id=将本地模型接入-fastgpt>将本地模型接入 FastGPT <a href=#%e5%b0%86%e6%9c%ac%e5%9c%b0%e6%a8%a1%e5%9e%8b%e6%8e%a5%e5%85%a5-fastgpt class=anchor aria-hidden=true><i class="material-icons align-middle">link</i></a></h2><p>修改 FastGPT 的 <code>config.json</code> 配置文件的 llmModels 部分加入 qwen-chat 模型：</p><div class=prism-codeblock><pre id=cfb1da6 class=language-json>
   <code>...
   &#34;llmModels&#34;: [
     {
@@ -78,8 +78,6 @@ pip install ctransformers</code>
       &#34;usedInToolCall&#34;: true, // 是否用于工具调用（务必保证至少有一个为true）
       &#34;toolChoice&#34;: true, // 是否支持工具选择（分类，内容提取，工具调用会用到。）
       &#34;functionCall&#34;: false, // 是否支持函数调用（分类，内容提取，工具调用会用到。会优先使用 toolChoice，如果为false，则使用 functionCall，如果仍为 false，则使用提示词模式）
-      &#34;customCQPrompt&#34;: &#34;&#34;, // 自定义文本分类提示词（不支持工具和函数调用的模型
-      &#34;customExtractPrompt&#34;: &#34;&#34;, // 自定义内容提取提示词
       &#34;defaultSystemChatPrompt&#34;: &#34;&#34;, // 对话默认携带的系统提示词
       &#34;defaultConfig&#34;: {} // 请求API时，挟带一些默认配置（比如 GLM4 的 top_p）
     }
