@@ -36,12 +36,14 @@ const requestLLMPargraph = async ({
   rawText,
   model,
   billId,
-  paragraphChunkAIMode
+  paragraphChunkAIMode,
+  customPdfParse
 }: {
   rawText: string;
   model: string;
   billId: string;
   paragraphChunkAIMode: ParagraphChunkAIModeEnum;
+  customPdfParse?: boolean;
 }) => {
   if (
     !global.feConfigs?.isPlus ||
@@ -55,9 +57,9 @@ const requestLLMPargraph = async ({
     };
   }
 
-  // Check is markdown text(Include 1 group of title)
+  // 优化Markdown检测逻辑
   if (paragraphChunkAIMode === ParagraphChunkAIModeEnum.auto) {
-    const isMarkdown = /^(#+)\s/.test(rawText);
+    const isMarkdown = isMarkdownText(rawText, customPdfParse);
     if (isMarkdown) {
       return {
         resultText: rawText,
@@ -78,6 +80,20 @@ const requestLLMPargraph = async ({
   });
 
   return data;
+};
+
+// 优化后的Markdown检测逻辑
+const isMarkdownText = (rawText: string, customPdfParse?: boolean) => {
+  // 如果启用了外部PDF解析，优先信任外部解析结果
+  if (customPdfParse) {
+    return true;
+  }
+
+  // 检查是否包含Markdown标题结构
+  const hasMarkdownHeaders = /^(#+)\s/m.test(rawText);
+  const hasMultipleHeaders = (rawText.match(/^(#+)\s/g) || []).length > 1;
+
+  return hasMarkdownHeaders && hasMultipleHeaders;
 };
 
 export const datasetParseQueue = async (): Promise<any> => {
@@ -221,7 +237,8 @@ export const datasetParseQueue = async (): Promise<any> => {
         rawText,
         model: dataset.agentModel,
         billId: data.billId,
-        paragraphChunkAIMode: collection.paragraphChunkAIMode
+        paragraphChunkAIMode: collection.paragraphChunkAIMode,
+        customPdfParse: collection.customPdfParse
       });
       // Push usage
       pushLLMTrainingUsage({

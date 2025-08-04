@@ -305,3 +305,17 @@ export type DatasetCiteItemType = {
   index: DatasetDataSchemaType['chunkIndex'];
   updated?: boolean;
 };
+
+/* ============= LLM Paragraph Processing =============== */
+export type LLMPargraphRequestType = {
+  rawText: string;
+  model: string;
+  billId: string;
+  customPdfParse?: boolean;
+};
+
+export type LLMPargraphResponseType = {
+  resultText: string;
+  totalInputTokens: number;
+  totalOutputTokens: number;
+};
