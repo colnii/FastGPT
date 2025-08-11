@@ -89,6 +89,7 @@ const VariableInput = ({
                   inputType={variableInputTypeToInputType(item.type, item.valueType)}
                   variablesForm={variablesForm}
                   bg={'myGray.50'}
+                  asPassword={item.type === VariableInputEnum.password}
                 />
               );
             })}
@@ -128,6 +129,7 @@ const VariableInput = ({
                 inputType={variableInputTypeToInputType(item.type)}
                 variablesForm={variablesForm}
                 bg={'myGray.50'}
+                asPassword={item.type === VariableInputEnum.password}
               />
             ))}
             {!chatStarted && (

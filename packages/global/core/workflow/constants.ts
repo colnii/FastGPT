@@ -333,7 +333,10 @@ export enum VariableInputEnum {
   textarea = 'textarea',
   numberInput = 'numberInput',
   select = 'select',
-  custom = 'custom'
+  custom = 'custom',
+  password = 'password',
+  multipleSelect = 'multipleSelect',
+  switch = 'switch'
 }
 export const variableMap: Record<
   VariableInputEnum,
@@ -376,6 +379,24 @@ export const variableMap: Record<
     value: VariableInputEnum.custom,
     defaultValueType: WorkflowIOValueTypeEnum.string,
     description: i18nT('app:variable.select type_desc')
+  },
+  [VariableInputEnum.password]: {
+    icon: 'core/workflow/inputType/password',
+    label: i18nT('common:core.workflow.inputType.password'),
+    value: VariableInputEnum.password,
+    defaultValueType: WorkflowIOValueTypeEnum.string
+  },
+  [VariableInputEnum.multipleSelect]: {
+    icon: 'core/workflow/inputType/option',
+    label: i18nT('common:core.workflow.inputType.multiple select'),
+    value: VariableInputEnum.multipleSelect,
+    defaultValueType: WorkflowIOValueTypeEnum.arrayString
+  },
+  [VariableInputEnum.switch]: {
+    icon: 'core/workflow/inputType/switch',
+    label: i18nT('common:core.workflow.inputType.switch'),
+    value: VariableInputEnum.switch,
+    defaultValueType: WorkflowIOValueTypeEnum.boolean
   }
 };
 

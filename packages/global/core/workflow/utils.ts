@@ -259,8 +259,11 @@ export const appData2FlowNodeIO = ({
             FlowNodeInputTypeEnum.input,
             FlowNodeInputTypeEnum.reference
           ],
+          [VariableInputEnum.password]: [FlowNodeInputTypeEnum.input],
+          [VariableInputEnum.multipleSelect]: [FlowNodeInputTypeEnum.multipleSelect],
+          [VariableInputEnum.switch]: [FlowNodeInputTypeEnum.switch],
           default: [FlowNodeInputTypeEnum.reference]
-        };
+        } as Record<string, FlowNodeInputTypeEnum[]>;
 
         return {
           key: item.key,

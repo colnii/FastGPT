@@ -12,6 +12,9 @@ import JSONEditor from '@fastgpt/web/components/common/Textarea/JsonEditor';
 import AIModelSelector from '../../../Select/AIModelSelector';
 import FileSelector from '../../../Select/FileSelector';
 import { useSafeTranslation } from '@fastgpt/web/hooks/useSafeTranslation';
+import { Input, InputGroup, InputRightElement, IconButton } from '@chakra-ui/react';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { useState } from 'react';
 
 const InputRender = (props: InputRenderProps) => {
   const {
@@ -60,6 +63,32 @@ const InputRender = (props: InputRenderProps) => {
           minH={40}
           maxH={120}
         />
+      );
+    }
+    // Password as a special case of input (masked, no variable suggestions)
+    if (inputType === InputTypeEnum.password || (props as any)?.asPassword === true) {
+      const [show, setShow] = useState(false);
+      return (
+        <InputGroup>
+          <Input
+            value={value ?? ''}
+            onChange={(e) => onChange(e.target.value)}
+            isDisabled={isDisabled}
+            isInvalid={isInvalid}
+            placeholder={t(placeholder as any)}
+            type={show ? 'text' : 'password'}
+            bg={bg}
+          />
+          <InputRightElement>
+            <IconButton
+              aria-label={show ? 'Hide password' : 'Show password'}
+              size="sm"
+              variant="ghost"
+              icon={show ? <ViewOffIcon /> : <ViewIcon />}
+              onClick={() => setShow((s) => !s)}
+            />
+          </InputRightElement>
+        </InputGroup>
       );
     }
 

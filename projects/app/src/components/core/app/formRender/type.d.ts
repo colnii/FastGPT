@@ -15,6 +15,7 @@ type CommonRenderProps = {
   isInvalid?: boolean;
 
   customRender?: (props: any) => React.ReactNode;
+  asPassword?: boolean;
 } & Omit<BoxProps, 'onChange' | 'list' | 'value'>;
 
 type SpecificProps =

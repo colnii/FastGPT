@@ -137,7 +137,12 @@ const VariableEdit = ({
         return;
       }
 
-      if (data.type !== VariableInputEnum.select && data.list) {
+      // keep list only for select & multipleSelect
+      if (
+        data.list &&
+        data.type !== VariableInputEnum.select &&
+        data.type !== VariableInputEnum.multipleSelect
+      ) {
         delete data.list;
       }
 

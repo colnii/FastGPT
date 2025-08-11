@@ -76,6 +76,7 @@ import { dispatchTextEditor } from './tools/textEditor';
 import type { DispatchFlowResponse } from './type';
 import { removeSystemVariable, rewriteRuntimeWorkFlow } from './utils';
 import { getHandleId } from '@fastgpt/global/core/workflow/utils';
+import { VariableInputEnum } from '@fastgpt/global/core/workflow/constants';
 
 const callbackMap: Record<FlowNodeTypeEnum, Function> = {
   [FlowNodeTypeEnum.workflowStart]: dispatchWorkflowStart,
@@ -828,10 +829,21 @@ export async function dispatchWorkFlow(data: Props): Promise<DispatchFlowRespons
       [DispatchNodeResponseKeyEnum.assistantResponses]:
         mergeAssistantResponseAnswerText(chatAssistantResponse),
       [DispatchNodeResponseKeyEnum.toolResponses]: toolRunResponse,
-      [DispatchNodeResponseKeyEnum.newVariables]: removeSystemVariable(
-        variables,
-        externalProvider.externalWorkflowVariables
-      ),
+      [DispatchNodeResponseKeyEnum.newVariables]: (() => {
+        const v = removeSystemVariable(variables, externalProvider.externalWorkflowVariables);
+        try {
+          const masked: Record<string, any> = { ...v };
+          const globalVariables = props.chatConfig?.variables || [];
+          globalVariables.forEach((gv) => {
+            if (gv.type === VariableInputEnum.password && gv.key in masked) {
+              masked[gv.key] = '******';
+            }
+          });
+          return masked;
+        } catch {
+          return v;
+        }
+      })(),
       [DispatchNodeResponseKeyEnum.memories]:
         Object.keys(system_memories).length > 0 ? system_memories : undefined,
       durationSeconds

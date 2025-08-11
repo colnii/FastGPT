@@ -104,7 +104,22 @@ const pushChatLogInternal = async ({
       return;
     }
 
-    const metadataString = JSON.stringify(metadata ?? {});
+    // mask password-like variable values in metadata before pushing
+    const maskedMeta = (() => {
+      try {
+        const m = { ...(metadata ?? {}) } as any;
+        const variableList = (chat as any).variableList || [];
+        variableList.forEach((v: any) => {
+          if (v?.type === 'password' && m[v.key]) {
+            m[v.key] = { ...(m[v.key] as any), value: '******' };
+          }
+        });
+        return m;
+      } catch {
+        return metadata ?? {};
+      }
+    })();
+    const metadataString = JSON.stringify(maskedMeta);
 
     const uid = chat.outLinkUid || chat.tmbId;
     // Pop last two items
